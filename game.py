@@ -44,6 +44,16 @@ def CheckJuego():
 	if (data["ciudadanos"] > 200 and data["tiempo"] > 12):
 		PasarDificultad()
 	return
+class Generator:
+	def __init__(self, key, keyeffects: dict[str, float]):
+		self.keyeffects = keyeffects
+		self.key = key
+	def Ciclo(self):
+		global data
+		if (self.keyeffects != None):
+			for keyfect in self.keyeffects:
+				data[keyfect] = self.keyeffects[keyfect](data[self.key], data[keyfect])
+		
 
 class PosibilidadDeActuacion:
 	def __init__(self, weight: int, keyEfect: dict[str, float], mensaje: str):
@@ -153,7 +163,7 @@ EXCLUDED_DATA = {}
 data = {}
 acciones = {}
 eventos = {}
-generadoes = {}
+generadores = {"ciudadanos": (Generator("ciudadanos", {"dn": lambda x,y: y+x*2500}))}
 internalData = {}
 def ShowInfo(difficulty):
 	print(f"Tienes: {data["dn"]} €")
@@ -172,10 +182,11 @@ def IniciarJuego():
 	internalData = {"factorFama": 625, "neutrality":60}
 	PasarDificultad(1)
 def Ciclo():
-	data["dn"] += data["ciudadanos"] * 2500
 	data["tiempo"] += 1 
-	ShowInfo(1)
 	Evento()
+	for generator in generadores.values():
+		generator.Ciclo()
+	ShowInfo(1)
 def Evento():
 	if (len(eventos)) == 1:
 		eventos[0].Acciones()
