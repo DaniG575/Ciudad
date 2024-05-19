@@ -53,8 +53,8 @@ class Generator:
 		if (self.keyeffects != None):
 			for keyfect in self.keyeffects:
 				data[keyfect] = self.keyeffects[keyfect](data[self.key], data[keyfect])
-		
-
+# Esto es un test
+# test 2
 class PosibilidadDeActuacion:
 	def __init__(self, weight: int, keyEfect: dict[str, float], mensaje: str):
 		self.weight = weight
